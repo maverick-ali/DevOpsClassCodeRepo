@@ -1,11 +1,17 @@
 pipeline{
     tools{
-        jdk 'myjava'
-        maven 'mymaven'
+        jdk 'Java'
+        maven 'Maven'
     }
     
-    agent none
+    agent any
     stages{
+            stage('checkout'){
+                agent any
+                steps{
+                    git 'https://github.com/maverick-ali/DevOpsClassCodeRepo.git'
+                }
+            }
             stage('Compile'){
                 agent any
                 steps{
@@ -19,15 +25,14 @@ pipeline{
                 }
                 post{
                     always{
-                        pmd pattern: 'target/pmd.xml'
+                        recordIssues(tools: [pmdParser(pattern: 'target/pmd.xml')])
                     }
                 }
             }
             stage('UnitTest'){
-                agent {label 'win_slave'}
+                agent any
                 steps{
-                    git 'https://github.com/devops-trainer/DevOpsClassCodes.git'
-                    bat 'mvn test'
+                    sh 'mvn test'
                 }
                 post{
                     always{
