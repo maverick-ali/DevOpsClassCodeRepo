@@ -6,12 +6,14 @@ pipeline{
     
     agent any
     stages{
+        /*
             stage('checkout'){
                 agent any
                 steps{
                     git 'https://github.com/maverick-ali/DevOpsClassCodeRepo.git'
                 }
             }
+            */
             stage('Compile'){
                 agent any
                 steps{
@@ -53,7 +55,7 @@ pipeline{
                 }
             }
             stage('Package'){
-                agent any
+                agent ubuntu_slave
                 steps{
                     sh 'mvn package'
                 }
