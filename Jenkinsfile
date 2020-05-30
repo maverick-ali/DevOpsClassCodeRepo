@@ -55,7 +55,7 @@ pipeline{
                 }
             }
             stage('Package'){
-                agent ubuntu_slave
+                agent {label 'ubuntu_slave'}
                 steps{
                     sh 'mvn package'
                 }
