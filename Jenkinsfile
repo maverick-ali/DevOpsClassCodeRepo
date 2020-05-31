@@ -55,9 +55,18 @@ pipeline{
                 }
             }
             stage('Package'){
-                agent {label 'ubuntu_slave'}
+                //agent {label 'ubuntu_slave'}
+                agent any
                 steps{
                     sh 'mvn package'
+                }
+            }
+            stage('Deploy'){
+                agent { dockerfile true }
+                steps{
+                    sh 'cp /var/lib/jenkins/workspace/DemoPipelineASCode@2/target/addressbook.war .'
+                    sh 'sudo docker build -t maverickali/devopstraining:addressbookImage$BUILD_NUMBER .'
+                    sh 'sudo docker run -itd -P maverickali/devopstraining:addressbookImage$BUILD_NUMBER'
                 }
             }
     }
